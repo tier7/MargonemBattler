@@ -4,6 +4,16 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import time
+eqPartIds = {'1h': 1, '2h': 2, '1_5h': 3, 'shield': 14, 'bow': 4, 'secondWeapon': 5, 'wand': 6, 'orb': 7, 'arrow': 29,
+             'armor': 8, 'helmet': 9, 'boots': 10, 'gloves': 11, 'ring': 12, 'necklace': 13}
+itemAttribs = ['id', 'name']
+ignoreAttribs = ['opis', 'permbound', 'quest', 'nodepo', 'created', 'nodesc', 'artisan_worthless', 'lvlupgcost',
+                 'lvlupgs', 'price', 'binds', 'enhancement_upgrade_lvl', 'nodepoclan', 'lvlnext', 'noauction', 'amount', 'cansplit', 'capacity', 'cursed', 'soulbound' ]
+url = f'https://margoworld.pl/item/*,1?name=&minLvl=&maxLvl=&cl=&p=1'
+response = requests.get(url)
+soup = BeautifulSoup(response.content, 'html.parser')
+
+
 
 def create_table(conn, table_name, columns):
     c = conn.cursor()
@@ -28,7 +38,10 @@ response = requests.get(url)
 soup = BeautifulSoup(response.content, 'html.parser')
 
 for name,number in eqPartIds.items():
-    numOfTabs = soup.find('div', 'd-flex justify-content-center m-2').find('ul', 'pagination').find_all("li",                                                                                                  "page-item")
+    url = f'https://margoworld.pl/item/*,{number}?name=&minLvl=&maxLvl=&cl=&p=1'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    numOfTabs = soup.find("div","d-flex justify-content-center m-2").find("ul", "pagination").find_all("li", "page-item")
     numOfTabs = int(numOfTabs[-1].find('a', 'page-link').text)
     itemAttribs = ['id', 'name']
     all_items = []
