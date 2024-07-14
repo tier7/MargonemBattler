@@ -6,7 +6,7 @@ class Paladin(Character):
         self.update_attributes()
 
     def update_attributes(self):
-        for level in range(1, self.level + 1):
+        for level in range(2, self.level + 1):
             if level < 21:
                 if level % 2 == 0:
                     self.ds += 2
