@@ -1,0 +1,39 @@
+class Character:
+    def __init__(self, level):
+        self.level = level
+        self.profession = profession
+        self.dmg = 0
+        self.da = 0 #wszystkie cechy
+        self.ds = 4 #sila
+        self.dz = 3 #zrecznosc
+        self.di = 3 #intelekt
+        self.sa = 1 #szybkosc
+        self.hp = 20 * min(level, 300)**1.375 #zycie
+        self.heal = 0 #leczenie
+        self.ac = 0 #pancerz
+        self.act = 0 #odpornosc na trucizne
+        self.blok = 0 #blok
+        self.evade = 0 #unik
+        self.acdmg = 0 #niszczenie pancerza
+        self.acmdmg = 0 #niszczenie odpornosci
+        self.adest = 0 #obnizanie przywracania zycia
+        self.absorb = 0 #absorbcja fizyczna
+        self.absorbm = 0 #absorbcja magiczna
+        self.manabon = 0 #mana
+        self.energybon = 0 #energia
+        self.slow = 0 #obnizanie SA przeciwnika
+        self.crit = 0 #cios krytyczny
+        self.critval = 0 #sila krytyka fizycznego
+        self.critmval = 0 #sila krytyka magicznego
+        self.lowcrit = 0 #obnizanie szansy na krytyk
+        self.enfatig = 0 #losowe niszczenie energii
+        self.manafatig = 0 #losowe niszczenie many
+        self.lowevade = 0 #obnizanie uniku
+        self.resfire = 0 #odpornosc na ogien
+        self.resfrost = 0 #odpornosc na zimno
+        self.reslight = 0 #odpornosc na blyskawice
+        self.pierce = 0 #przebicie pancerza
+        self.pierceb = 0 #blok przebicia pancerza
+        self.contra = 0 #szansa na kontre
+        self.absdest = 0 #niszczenie absorbcji
+
