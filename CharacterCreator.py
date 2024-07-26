@@ -21,3 +21,5 @@ class Creator:
             return Warrior(level)
         else:
             raise ValueError(f"Unknown character type: {profession}")
+    def gearUp(self, helmetID, necklaceID, ringID, glovesID, chestplateID, bootsID, firsthandID, secondhandID):
+        eqElements = {"helmet"}
