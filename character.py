@@ -1,6 +1,7 @@
 from get_item_from_db import getItem
 class Character:
     def __init__(self, level):
+        self.equipment = []
         self.level = level
         self.dmg = 0
         self.da = 0  # wszystkie cechy
@@ -39,22 +40,3 @@ class Character:
         self.absorblimit = 0 #limit absorbcji
         self.update_common_attributes()
 
-    def update_gear_attributes(self, helmetID, necklaceID, ringID, glovesID, chestplateID, bootsID, firsthandID, secondhandID):
-        self.helmetID = helmetID
-        self.necklaceID = necklaceID
-        self.ringID = ringID
-        self.glovesID = glovesID
-        self.chestplateID = chestplateID
-        self.bootsID = bootsID
-        self.firsthandID = firsthandID
-        self.secondhandID = secondhandID
-
-
-    def update_common_attributes(self):
-        self.crit = self.crit + 0.02*self.level
-        self.hp = self.hp+self.ds*5
-        self.critval = self.critval + ((self.ds)/(0.5*self.level))
-        self.critmval = self.critval + ((self.di)/(0.5*self.level))
-        self.absorblimit = self.di*7
-        self.sa = self.sa + (min(2, 0.02*self.dz)+max(0, 0.002*(self.dz-100)))
-        self.evade = self.evade + (self.dz/30)
