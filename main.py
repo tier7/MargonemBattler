@@ -4,6 +4,6 @@ from CharacterCreator import Creator
 warrior = Creator.create("mage", 300)
 
 print(f"Level: {warrior.level}, Strength: {warrior.ds}, Dexterity: {warrior.dz}, Intelligence: {warrior.di}, Hp: {warrior.hp}, crit: {warrior.crit}")
-Creator.gearUp(warrior, 39730,0,0,0,0,0,0,0)
-print(warrior.equipment)
+Creator.gearUp(warrior, 45483,0,0,0,0,0,0,0)
 Creator.update_common_attributes(warrior)
+print(warrior)

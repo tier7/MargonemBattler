@@ -1,10 +1,12 @@
 from get_item_from_db import getItem
 class Character:
     def __init__(self, level):
+        self.pdmg = {"min":0, "max":0}
+        self.mdmg = {"min":0, "max":0}
         self.equipment = []
         self.level = level
         self.dmg = 0
-        self.da = 0  # wszystkie cechy
+        self.da = 0  # wszycstkie cechy
         self.ds = 4  # siła
         self.dz = 3  # zręczność
         self.di = 3  # intelekt
@@ -16,7 +18,7 @@ class Character:
         self.blok = 0  # blok
         self.evade = 0  # unik
         self.acdmg = 0  # niszczenie pancerza
-        self.acmdmg = 0  # niszczenie odporności
+        self.resdmg = 0  # niszczenie odporności
         self.adest = 0  # obniżanie przywracania życia
         self.absorb = 0  # absorpcja fizyczna
         self.absorbm = 0  # absorpcja magiczna
@@ -24,8 +26,8 @@ class Character:
         self.energybon = 50  # energia
         self.slow = 0  # obniżanie SA przeciwnika
         self.crit = 1  # cios krytyczny
-        self.critval = 0  # siła krytyka fizycznego
-        self.critmval = 0  # siła krytyka magicznego
+        self.critval = 120  # siła krytyka fizycznego
+        self.critmval = 120  # siła krytyka magicznego
         self.lowcrit = 0  # obniżanie szansy na krytyk
         self.enfatig = 0  # losowe niszczenie energii
         self.manafatig = 0  # losowe niszczenie many
@@ -33,10 +35,50 @@ class Character:
         self.resfire = 0  # odporność na ogień
         self.resfrost = 0  # odporność na zimno
         self.reslight = 0  # odporność na błyskawice
+        self.act = 0 # odpornosc na trucizne
         self.pierce = 0  # przebicie pancerza
         self.pierceb = 0  # blok przebicia pancerza
         self.contra = 0  # szansa na kontrę
         self.absdest = 0  # niszczenie absorpcji
         self.absorblimit = 0 #limit absorbcji
-        self.update_common_attributes()
+
+    def __str__(self):
+        equipment_str = "\n".join(f"Item name: {item['name']}, item_lvl: {item["lvl"]}" for item in self.equipment)
+        return (f"Level: {self.level} \n"
+                f"-----------------------\n"
+                f"EQUIPMENT\n"
+                f"{equipment_str}\n"
+                f"-----------------------\n"
+                f"ATTACK\n"
+                f"Physical dmg: {str(self.pdmg["min"])}-{str(self.pdmg["max"])}\n"
+                f"Magic dmg: {str(self.mdmg["min"])}-{str(self.mdmg["max"])}\n"
+                f"Crit chance: {self.crit}\n"
+                f"Physical crit strenght: {self.critval}\n"
+                f"Magical crit strenght: {self.critmval}\n"
+                f"Slow: {self.slow}\n"
+                f"Armor break: {self.acdmg}\n"
+                f"Resist break: {self.resdmg}% \n"
+                f"-----------------------\n"
+                f"DEFENCE\n"
+                f"Health: {self.hp} \n"
+                f"Armor: {self.ac}\n"
+                f"Evade: {self.evade}\n"
+                f"Block: {self.blok}\n"
+                f"Heal: {self.hp}\n"
+                f"Physical absorption: {self.absorb}\n"
+                f"Magical absortpion:{self.absorbm}\n"
+                f"RESISTS\n"
+                f"Fire resist: {self.resfire}\n"
+                f"Lightning resist: {self.reslight}\n"
+                f"Frost resist: {self.resfrost}\n"
+                f"Poison resist: {self.act}\n"
+                f"-----------------------\n"
+                f"RESOURCES\n"
+                f"Mana: {self.manabon}\n"
+                f"Energy: {self.energybon}\n"
+                f"-----------------------\n"
+                f"BASICS\n"
+                f"Strength: {self.ds} \n"
+                f"Dexterity: {self.dz} \n"
+                f"Intelligence: {self.di} \n")
 

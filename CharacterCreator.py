@@ -31,12 +31,14 @@ class Creator:
             if element != 0:
                 character.equipment.append(get_item_from_db.getItem(element, key))
                 print(get_item_from_db.getItem(element, key))
+
     @staticmethod
     def update_common_attributes(character):
+        ignoreAttribs = ["id","name","rarity","reqp","lvl","artisanbon", "legbon"]
         for item in character.equipment:
             for stat, value in item.items():
-                if value != "None":
-                    character.stat += value
+                if value != None and stat not in ignoreAttribs:
+                    setattr(character, stat, getattr(character, stat) + int(value))
         character.crit = character.crit + 0.02*character.level
         character.hp = character.hp+character.ds*5
         character.critval = character.critval + ((character.ds)/(0.5*character.level))
