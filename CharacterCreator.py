@@ -29,20 +29,40 @@ class Creator:
         eqElements = {'helmet':helmetID, 'necklace':necklaceID, 'ring':ringID, 'gloves':glovesID, 'armor':armorID, 'boots':bootsID, 'firstHand':firstHandID, 'secondHand':secondHandID}
         for key,element in eqElements.items():
             if element != 0:
-                character.equipment.append(get_item_from_db.getItem(element, key))
-                print(get_item_from_db.getItem(element, key))
-
+                character.equipment[key] = get_item_from_db.getItem(element, key)
+                print(character.equipment)
     @staticmethod
     def update_common_attributes(character):
         ignoreAttribs = ["id","name","rarity","reqp","lvl","artisanbon", "legbon"]
-        for item in character.equipment:
-            for stat, value in item.items():
-                if value != None and stat not in ignoreAttribs:
-                    setattr(character, stat, getattr(character, stat) + int(value))
+        for item,stats in character.equipment.items():
+            if stats != None:
+                for stat,value in stats.items():
+                    if value != None and stat == "enfatig":
+                        value = value.split(",")
+                        character.enfatigChance += int(value[0])
+                        if character.enfatigChance > 100:
+                            character.enfatigChance = 100
+                        character.enfatigVal = max(int(value[1]),character.enfatigVal)
+                    elif value != None and stat == "manafatig":
+                        value = value.split(",")
+                        character.manafatigChance += int(value[0])
+                        if character.manafatigChance > 100:
+                            character.manafatigChance = 100
+                        character.manafatigVal = max(int(value[1]), character.manafatigVal)
+                    elif value != None and stat == "da":
+                        character.di+= int(value)
+                        character.ds+= int(value)
+                        character.dz+= int(value)
+                    elif value != None and stat == "sa":
+                        character.sa = character.sa+int(value)/100
+                    elif value != None and stat == "slow":
+                        character.slow = character.slow+int(value)/100
+                    elif value != None and stat not in ignoreAttribs:
+                        setattr(character, stat, getattr(character, stat) + int(value))
         character.crit = character.crit + 0.02*character.level
         character.hp = character.hp+character.ds*5
         character.critval = character.critval + ((character.ds)/(0.5*character.level))
-        character.critmval = character.critval + ((character.di)/(0.5*character.level))
+        character.critmval = character.critmval + ((character.di)/(0.5*character.level))
         character.absorblimit = character.di*7
         character.sa = character.sa + (min(2, 0.02*character.dz)+max(0, 0.002*(character.dz-100)))
         character.evade = character.evade + (character.dz/30)

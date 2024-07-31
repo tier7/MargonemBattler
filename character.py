@@ -1,9 +1,9 @@
 from get_item_from_db import getItem
 class Character:
     def __init__(self, level):
+        self.equipment = {"helmet":None, "necklace":None, "ring":None, "gloves":None, "armor":None, "boots":None, "firstHand":None, "secondHand":None}
         self.pdmg = {"min":0, "max":0}
         self.mdmg = {"min":0, "max":0}
-        self.equipment = []
         self.level = level
         self.dmg = 0
         self.da = 0  # wszycstkie cechy
@@ -29,8 +29,10 @@ class Character:
         self.critval = 120  # siła krytyka fizycznego
         self.critmval = 120  # siła krytyka magicznego
         self.lowcrit = 0  # obniżanie szansy na krytyk
-        self.enfatig = 0  # losowe niszczenie energii
-        self.manafatig = 0  # losowe niszczenie many
+        self.enfatigVal = 0  # losowe niszczenie energii
+        self.manafatigVal = 0  # losowe niszczenie many
+        self.enfatigChance = 0
+        self.manafatigChance = 0
         self.lowevade = 0  # obniżanie uniku
         self.resfire = 0  # odporność na ogień
         self.resfrost = 0  # odporność na zimno
@@ -43,7 +45,11 @@ class Character:
         self.absorblimit = 0 #limit absorbcji
 
     def __str__(self):
-        equipment_str = "\n".join(f"Item name: {item['name']}, item_lvl: {item["lvl"]}" for item in self.equipment)
+        equipment_str = "\n".join(
+             f"{item.upper()}: {stats['name']}, {stats['lvl']}"
+            for item, stats in self.equipment.items()
+            if stats is not None
+        )
         return (f"Level: {self.level} \n"
                 f"-----------------------\n"
                 f"EQUIPMENT\n"
@@ -52,12 +58,13 @@ class Character:
                 f"ATTACK\n"
                 f"Physical dmg: {str(self.pdmg["min"])}-{str(self.pdmg["max"])}\n"
                 f"Magic dmg: {str(self.mdmg["min"])}-{str(self.mdmg["max"])}\n"
+                f"SA: {self.sa}\n"
                 f"Crit chance: {self.crit}\n"
                 f"Physical crit strenght: {self.critval}\n"
                 f"Magical crit strenght: {self.critmval}\n"
                 f"Slow: {self.slow}\n"
-                f"Armor break: {self.acdmg}\n"
-                f"Resist break: {self.resdmg}% \n"
+                f"Armor destruction: {self.acdmg}\n"
+                f"Resist destruction: {self.resdmg}% \n"
                 f"-----------------------\n"
                 f"DEFENCE\n"
                 f"Health: {self.hp} \n"
@@ -66,7 +73,9 @@ class Character:
                 f"Block: {self.blok}\n"
                 f"Heal: {self.hp}\n"
                 f"Physical absorption: {self.absorb}\n"
-                f"Magical absortpion:{self.absorbm}\n"
+                f"Magical absortpion: {self.absorbm}\n"
+                f"Mana destruction: {self.manafatigVal} - {self.manafatigChance}%\n"
+                f"Energy destruction: {self.enfatigVal} - {self.enfatigChance}%\n"
                 f"RESISTS\n"
                 f"Fire resist: {self.resfire}\n"
                 f"Lightning resist: {self.reslight}\n"
