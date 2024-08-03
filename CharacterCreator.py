@@ -57,8 +57,38 @@ class Creator:
                         character.sa = character.sa+int(value)/100
                     elif value != None and stat == "slow":
                         character.slow = character.slow+int(value)/100
+                    elif value != None and stat in ["light", "fire", "frost"]:
+                        value = value.split(",")
+                        if item == "firstHand":
+                            character.magicDmgType["firstHand"] = stat
+                            if stat == "light":
+                                character.magicDmg["firstHand"] = {"min": value[0], "max": value[1]}
+                            elif stat == "fire":
+                                character.magicDmg["firstHand"] = value[0]
+                            else:
+                                character.magicDmg["firstHand"] = value[1]
+                                if int(value[0]) / 10 > character.weaponSlow["frost"]:
+                                    character.weaponSlow["frost"] = int(value[0])/10
+                        else:
+                            character.magicDmgType["secondHand"] = stat
+                            if stat == "light":
+                                character.magicDmg["secondHand"] = {"min": value[0], "max": value[1]}
+                            elif stat == "fire":
+                                character.magicDmg["secondHand"] = value[0]
+                            else:
+                                character.magicDmg["secondHand"] = value[1]
+                                if int(value[0]) > character.weaponSlow["frost"]:
+                                    character.weaponSlow["frost"] = int(value[0])/10
+                    elif value != None and stat == "dmg":
+                        value = value.split(",")
+                        if item == "firstHand":
+                            character.physicalDmg["firstHand"] = {"min": value[0], "max": value[1]}
+                        else:
+                            character.physicalDmg["secondHand"] = {"min": value[0], "max": value[1]}
                     elif value != None and stat not in ignoreAttribs:
                         setattr(character, stat, getattr(character, stat) + int(value))
+
+
         character.crit = character.crit + 0.02*character.level
         character.hp = character.hp+character.ds*5
         character.critval = character.critval + ((character.ds)/(0.5*character.level))

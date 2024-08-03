@@ -2,10 +2,7 @@ from get_item_from_db import getItem
 class Character:
     def __init__(self, level):
         self.equipment = {"helmet":None, "necklace":None, "ring":None, "gloves":None, "armor":None, "boots":None, "firstHand":None, "secondHand":None}
-        self.pdmg = {"min":0, "max":0}
-        self.mdmg = {"min":0, "max":0}
         self.level = level
-        self.dmg = 0
         self.da = 0  # wszycstkie cechy
         self.ds = 4  # siła
         self.dz = 3  # zręczność
@@ -43,6 +40,12 @@ class Character:
         self.contra = 0  # szansa na kontrę
         self.absdest = 0  # niszczenie absorpcji
         self.absorblimit = 0 #limit absorbcji
+        self.weaponSlow = {"frost":0, "poison":0}
+        self.physicalDmg = {"firstHand": None, "secondHand": None}
+        self.magicDmg = {"firstHand": None, "secondHand": None}
+        self.additionalDmg = {"firstHand": None, "secondHand": None}
+        self.magicDmgType = {"firstHand": None, "secondHand": None}
+        self.additionalDmgType = {"firstHand": None, "secondHand": None}
 
     def __str__(self):
         equipment_str = "\n".join(
@@ -56,8 +59,8 @@ class Character:
                 f"{equipment_str}\n"
                 f"-----------------------\n"
                 f"ATTACK\n"
-                f"Physical dmg: {str(self.pdmg["min"])}-{str(self.pdmg["max"])}\n"
-                f"Magic dmg: {str(self.mdmg["min"])}-{str(self.mdmg["max"])}\n"
+                f"Physical dmg: {str(self.physicalDmg["firstHand"])}+{str(self.physicalDmg["secondHand"])}\n"
+                f"Magic dmg: {str(self.magicDmg["firstHand"])}+{str(self.magicDmg["secondHand"])}\n"
                 f"SA: {self.sa}\n"
                 f"Crit chance: {self.crit}\n"
                 f"Physical crit strenght: {self.critval}\n"
@@ -90,4 +93,7 @@ class Character:
                 f"Strength: {self.ds} \n"
                 f"Dexterity: {self.dz} \n"
                 f"Intelligence: {self.di} \n")
-
+    def calculate_dmg(self, oponent):
+        
+    def attack(self, oponent):
+        oponent.hp =
