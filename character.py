@@ -41,17 +41,24 @@ class Character:
         self.absdest = 0  # niszczenie absorpcji
         self.absorblimit = 0 #limit absorbcji
         self.weaponSlow = {"frost":0, "poison":0}
-        self.physicalDmg = {"firstHand": None, "secondHand": None}
-        self.magicDmg = {"firstHand": None, "secondHand": None}
-        self.additionalDmg = {"firstHand": None, "secondHand": None}
-        self.magicDmgType = {"firstHand": None, "secondHand": None}
-        self.additionalDmgType = {"firstHand": None, "secondHand": None}
-
+        self.damage = {"dmg":0, "pdmg":0, "fire":0, "light": 0, "frost":0, "poison": 0, "wound": 0}
+        self.wasHit = False
     def __str__(self):
         equipment_str = "\n".join(
              f"{item.upper()}: {stats['name']}, {stats['lvl']}"
             for item, stats in self.equipment.items()
             if stats is not None
+        )
+        physical_damage = " + ".join(
+            f"{self.damage[key]}"
+            for key in ["dmg", "pdmg", "poison", "wound"]
+            if self.damage[key] != 0
+        )
+
+        magical_damage = " + ".join(
+            f"{self.damage[key]}"
+            for key in ["fire", "frost", "light"]
+            if self.damage[key] != 0
         )
         return (f"Level: {self.level} \n"
                 f"-----------------------\n"
@@ -59,8 +66,8 @@ class Character:
                 f"{equipment_str}\n"
                 f"-----------------------\n"
                 f"ATTACK\n"
-                f"Physical dmg: {str(self.physicalDmg["firstHand"])}+{str(self.physicalDmg["secondHand"])}\n"
-                f"Magic dmg: {str(self.magicDmg["firstHand"])}+{str(self.magicDmg["secondHand"])}\n"
+                f"Physical dmg: {physical_damage}\n"
+                f"Magic dmg: {magical_damage}\n"
                 f"SA: {self.sa}\n"
                 f"Crit chance: {self.crit}\n"
                 f"Physical crit strenght: {self.critval}\n"
@@ -92,8 +99,30 @@ class Character:
                 f"BASICS\n"
                 f"Strength: {self.ds} \n"
                 f"Dexterity: {self.dz} \n"
-                f"Intelligence: {self.di} \n")
-    def calculate_dmg(self, oponent):
-        
-    def attack(self, oponent):
-        oponent.hp =
+                f"Intelligence: {self.di} \n"
+                f"AT na poczatku: {(1/(self.sa+1))} \n")
+
+
+
+
+    def attack(self, opponent):
+        dmg_str = ""
+        getDmg_str = ""
+        opponent.wasHit = True
+        for key, res_key in {"fire": "resfire", "frost": "resfrost", "light": "reslight"}.items():
+            if self.damage[key] != 0:
+                dmg_str = f"{dmg_str} + {self.damage[key]}" if dmg_str else f"{self.damage[key]}"
+                resistance = getattr(opponent, res_key)
+                dmgTaken = self.damage[key] - 0.5 * opponent.ac * (1.13 - 0.31 * 0.5 * opponent.ac / self.damage[key])
+                opponent.ac -= self.acdmg
+                dmgTaken = dmgTaken * (100 - resistance)/100
+                setattr(opponent, res_key, getattr(opponent, res_key) - self.resdmg)
+                opponent.hp -= dmgTaken
+                getDmg_str = f"{getDmg_str} + {dmgTaken:}" if getDmg_str else f"{dmgTaken}"
+
+
+        """print("Damage dealt:", dmg_str)
+        print("Damage taken by opponent:", getDmg_str)
+        print(f"Opponent hp: {round(opponent.hp)} armor: {opponent.ac}")"""
+
+

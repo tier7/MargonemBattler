@@ -30,7 +30,7 @@ class Creator:
         for key,element in eqElements.items():
             if element != 0:
                 character.equipment[key] = get_item_from_db.getItem(element, key)
-                print(character.equipment)
+
     @staticmethod
     def update_common_attributes(character):
         ignoreAttribs = ["id","name","rarity","reqp","lvl","artisanbon", "legbon"]
@@ -57,34 +57,19 @@ class Creator:
                         character.sa = character.sa+int(value)/100
                     elif value != None and stat == "slow":
                         character.slow = character.slow+int(value)/100
-                    elif value != None and stat in ["light", "fire", "frost"]:
+                    elif value != None and stat == "light":
                         value = value.split(",")
-                        if item == "firstHand":
-                            character.magicDmgType["firstHand"] = stat
-                            if stat == "light":
-                                character.magicDmg["firstHand"] = {"min": value[0], "max": value[1]}
-                            elif stat == "fire":
-                                character.magicDmg["firstHand"] = value[0]
-                            else:
-                                character.magicDmg["firstHand"] = value[1]
-                                if int(value[0]) / 10 > character.weaponSlow["frost"]:
-                                    character.weaponSlow["frost"] = int(value[0])/10
-                        else:
-                            character.magicDmgType["secondHand"] = stat
-                            if stat == "light":
-                                character.magicDmg["secondHand"] = {"min": value[0], "max": value[1]}
-                            elif stat == "fire":
-                                character.magicDmg["secondHand"] = value[0]
-                            else:
-                                character.magicDmg["secondHand"] = value[1]
-                                if int(value[0]) > character.weaponSlow["frost"]:
-                                    character.weaponSlow["frost"] = int(value[0])/10
+                        character.damage[stat] += int(value[0])
+                    elif value != None and stat == "frost":
+                        value = value.split(",")
+                        character.weaponSlow[stat] += int(value[0])/100
+                        character.damage[stat] += int(value[1])
+                    elif value != None and stat == "fire":
+                        character.damage[stat] += int(value)
                     elif value != None and stat == "dmg":
                         value = value.split(",")
-                        if item == "firstHand":
-                            character.physicalDmg["firstHand"] = {"min": value[0], "max": value[1]}
-                        else:
-                            character.physicalDmg["secondHand"] = {"min": value[0], "max": value[1]}
+                        character.damage[stat] += (int(value[0])+int(value[1]))/2
+
                     elif value != None and stat not in ignoreAttribs:
                         setattr(character, stat, getattr(character, stat) + int(value))
 
