@@ -5,6 +5,7 @@ from professions.hunter import Hunter
 from professions.mage import Mage
 from professions.tracker import Tracker
 from professions.bladeDancer import BladeDancer
+
 class Creator:
     @staticmethod
     def create(profession, level):
@@ -24,6 +25,7 @@ class Creator:
             raise ValueError(f"Unknown character type: {profession}")
 
     @staticmethod
+    # equipment
     def gearUp(character, helmetID, necklaceID, ringID, glovesID, armorID, bootsID, firstHandID, secondHandID):
 
         eqElements = {'helmet':helmetID, 'necklace':necklaceID, 'ring':ringID, 'gloves':glovesID, 'armor':armorID, 'boots':bootsID, 'firstHand':firstHandID, 'secondHand':secondHandID}
@@ -33,7 +35,7 @@ class Creator:
 
     @staticmethod
     def update_common_attributes(character):
-        ignoreAttribs = ["id","name","rarity","reqp","lvl","artisanbon", "legbon"]
+        ignoreAttribs = ["id", "name", "rarity", "reqp", "lvl", "artisanbon", "legbon"]
         for item,stats in character.equipment.items():
             if stats != None:
                 for stat,value in stats.items():
@@ -81,3 +83,5 @@ class Creator:
         character.absorblimit = character.di*7
         character.sa = character.sa + (min(2, 0.02*character.dz)+max(0, 0.002*(character.dz-100)))
         character.evade = character.evade + (character.dz/30)
+
+

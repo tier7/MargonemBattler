@@ -1,11 +1,13 @@
 from character import Character
 
 class BladeDancer(Character):
+
+    # static values
+    position = 1
+    able_to_walk = True
     def __init__(self, level):
         super().__init__(level)
         self.update_attributes()
-        self.position = 1
-        self.able_to_walk = True
     def update_attributes(self):
         for level in range(2, self.level + 1):
             if level < 21:
