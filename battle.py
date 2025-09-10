@@ -32,32 +32,19 @@ class Battle():
         # third lane
 
         if profession == "tracker" or "hunter":
-            return Tracker.position # the same position
-
-    def isAble(self, profession):
-        if profession == "paladin" or "warrior" or "bladeDancer":
-            return Paladin.able_to_walk
-
-        if profession == "mage":
-            return Mage.able_to_walk
-
-        if profession == "tracker" or "hunter":
-            return Tracker.able_to_walk
+            return Tracker.position             # the same position
 
     def count_of_steps(self, player1, player2, profession):
-        step_forward = 0        # krok do przodu
+        step_forward = 0                # krok do przodu
 
-        if player1.isAble and player2.isAble:
-            return
+        if player1.getPos > 1 and player2.getPos > 1:
+            return      # ranged professions are not taking a step forward
 
-        if not player1.isAble and not player2.isAble:
-            return
-
-        if player1.isAble(profession):
-            if not player2.isAble(profession):
+        if player1.getPos == 1:
+            if player2.getPos > 1:
                 step_forward = player2.getPos - player1.getPos
-        elif player2.isAble(profession):
-            if not player1.isAble(profession):
+        elif player2.getPos == 1:
+            if player1.getPos > 1:
                 step_forward = player1.getPos - player2.getPos
 
         return step_forward
