@@ -1,5 +1,7 @@
 from get_item_from_db import getItem
 class Character:
+    ELEMENTAL_RESISTS = {"fire": "resfire", "frost": "resfrost", "light": "reslight"}
+
     def __init__(self, level):
         self.equipment = {"helmet":None, "necklace":None, "ring":None, "gloves":None, "armor":None, "boots":None, "firstHand":None, "secondHand":None}
         self.level = level
@@ -105,24 +107,31 @@ class Character:
 
 
 
+    def _get_active_elemental_context(self, opponent):
+        return [
+            (element, self.damage[element], resist_key, getattr(opponent, resist_key))
+            for element, resist_key in self.ELEMENTAL_RESISTS.items()
+            if self.damage[element] > 0
+        ]
+
     def attack(self, opponent):
         dmg_str = ""
         getDmg_str = ""
         opponent.wasHit = True
-        for key, res_key in {"fire": "resfire", "frost": "resfrost", "light": "reslight"}.items():
-            if self.damage[key] != 0:
-                dmg_str = f"{dmg_str} + {self.damage[key]}" if dmg_str else f"{self.damage[key]}"
-                resistance = getattr(opponent, res_key)
-                dmgTaken = self.damage[key] - 0.5 * opponent.ac * (1.13 - 0.31 * 0.5 * opponent.ac / self.damage[key])
-                opponent.ac -= self.acdmg
-                dmgTaken = dmgTaken * (100 - resistance)/100
-                setattr(opponent, res_key, getattr(opponent, res_key) - self.resdmg)
-                opponent.hp -= dmgTaken
-                getDmg_str = f"{getDmg_str} + {dmgTaken:}" if getDmg_str else f"{dmgTaken}"
+
+        active_elemental_context = self._get_active_elemental_context(opponent)
+
+        for _, damage_value, resist_key, resistance in active_elemental_context:
+            dmg_str = f"{dmg_str} + {damage_value}" if dmg_str else f"{damage_value}"
+            dmgTaken = damage_value - 0.5 * opponent.ac * (1.13 - 0.31 * 0.5 * opponent.ac / damage_value)
+            opponent.ac -= self.acdmg
+            dmgTaken = dmgTaken * (100 - resistance)/100
+            setattr(opponent, resist_key, getattr(opponent, resist_key) - self.resdmg)
+            opponent.hp -= dmgTaken
+            getDmg_str = f"{getDmg_str} + {dmgTaken:}" if getDmg_str else f"{dmgTaken}"
 
 
         """print("Damage dealt:", dmg_str)
         print("Damage taken by opponent:", getDmg_str)
         print(f"Opponent hp: {round(opponent.hp)} armor: {opponent.ac}")"""
-
 
