@@ -7,6 +7,7 @@ class BladeDancer(Character):
     able_to_walk = True
     def __init__(self, level):
         super().__init__(level)
+        self.profession = 'blade-dancer'
         self.update_attributes()
     def update_attributes(self):
         for level in range(2, self.level + 1):

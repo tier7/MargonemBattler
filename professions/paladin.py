@@ -7,6 +7,7 @@ class Paladin(Character):
     able_to_walk = True
     def __init__(self, level):
         super().__init__(level)
+        self.profession = 'paladin'
         self.update_attributes()
 
     def update_attributes(self):

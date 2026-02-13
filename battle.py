@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+
 import effects
 import character
 
@@ -49,13 +51,19 @@ class Battle():
 
         return step_forward
 
+    def any_dead(self, player1, player2):
+        if player1.is_dead == True or player2.is_dead == True:
+            return True
+
     def battle(self):
         round_count = 0
         player1_at_sum = 0
         player2_at_sum = 0
-        while round_count < 10:
+        max_moves = 75
+        while round_count < max_moves:
             player1_at = effects.Effects.calculate_final_AT(self.player1,self.player2)
             player2_at = effects.Effects.calculate_final_AT(self.player2,self.player1)
+
             if player1_at_sum + player1_at < player2_at_sum + player2_at:
                 self.player1.attack(self.player2)
                 print("gracz 1 wykonal ruch")
@@ -65,3 +73,9 @@ class Battle():
                 print("gracz 2 wykonal ruch")
                 player2_at_sum += player2_at
             round_count +=1
+            print(player1_at_sum, player2_at_sum)
+            if (self.any_dead(self.player1, self.player2)):
+                print(min(self.player1.hp, self.player2.hp))
+                break
+
+

@@ -1,4 +1,5 @@
 import get_item_from_db
+import skills
 from professions.paladin import Paladin
 from professions.warrior import Warrior
 from professions.hunter import Hunter
@@ -10,11 +11,26 @@ class Creator:
     @staticmethod
     def create(profession, level):
         if profession == "paladin":
-            return Paladin(level)
+            paladin = Paladin(level)
+            return paladin
         elif profession == "hunter":
             return Hunter(level)
         elif profession == "mage":
-            return Mage(level)
+            mage = Mage(level)
+            skills.assign_skills(mage,
+            {
+            "kula_ognia":0, "lodowy_pocisk":0, "porazenie":0, "zwiekszenie_absorpcji":0,
+            "koncentracja_many":0, "sprawnosc_fizyczna":0, "duszacy_pocisk":0, "leczenie_ran":0,
+            "fuzja_zywiolow":0, "chwila_skupienia":0, "zdrowa_atmosfera":0, "cios_krytyczny":0,
+            "spowalniajace_uderzenie":0, "szadz":0, "rozladowujacy_pocisk":0, "rytualne_szaty":0,
+            "magiczna_oslona":0, "wrodzona_szybkosc":0, "potega_ognia":0, "potega_zimna":0,
+            "potega_blyskawic":0, "moc_leczenia":0, "krytyczna_potega":0, "przetrwanie":0,
+            "stopiona_skora":0, "mrozne_sople":0, "wyladowanie_energii":0, "determinacja":0,
+            "apogeum":0, "wzmocniony_pancerz":0, "plonaca_bariera":0, "lodowa_bariera":0,
+            "elektryczna_bariera":0, "wytrwalosc_elementalisty":0, "oslabienie":0,
+            "trwalosc_mocy":0, "wewnetrzny_spokoj":0, "klatwa":0, "zrodlo_potegi":0,
+            "platnerstwo":0, "konskie_zdrowie":0, "strach":0})
+            return mage
         elif profession == "tracker":
             return Tracker(level)
         elif profession == "blade-dancer":
@@ -27,7 +43,6 @@ class Creator:
     @staticmethod
     # equipment
     def gearUp(character, helmetID, necklaceID, ringID, glovesID, armorID, bootsID, firstHandID, secondHandID):
-
         eqElements = {'helmet':helmetID, 'necklace':necklaceID, 'ring':ringID, 'gloves':glovesID, 'armor':armorID, 'boots':bootsID, 'firstHand':firstHandID, 'secondHand':secondHandID}
         for key,element in eqElements.items():
             if element != 0:

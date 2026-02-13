@@ -45,6 +45,7 @@ class Character:
         self.weaponSlow = {"frost":0, "poison":0}
         self.damage = {"dmg":0, "pdmg":0, "fire":0, "light": 0, "frost":0, "poison": 0, "wound": 0}
         self.wasHit = False
+        self.skill_levels = {}
     def __str__(self):
         equipment_str = "\n".join(
              f"{item.upper()}: {stats['name']}, {stats['lvl']}"
@@ -84,6 +85,7 @@ class Character:
                 f"Evade: {self.evade}\n"
                 f"Block: {self.blok}\n"
                 f"Heal: {self.hp}\n"
+                f"Health regeneration: {self.heal}\n"
                 f"Physical absorption: {self.absorb}\n"
                 f"Magical absortpion: {self.absorbm}\n"
                 f"Mana destruction: {self.manafatigVal} - {self.manafatigChance}%\n"
@@ -102,6 +104,7 @@ class Character:
                 f"Strength: {self.ds} \n"
                 f"Dexterity: {self.dz} \n"
                 f"Intelligence: {self.di} \n"
+                f"Spele:  {self.skill_levels} \n"
                 f"AT na poczatku: {(1/(self.sa+1))} \n")
 
 
@@ -113,6 +116,10 @@ class Character:
             for element, resist_key in self.ELEMENTAL_RESISTS.items()
             if self.damage[element] > 0
         ]
+
+    def is_dead(self):
+        if self.hp <= 0:
+            return True
 
     def attack(self, opponent):
         dmg_str = ""
@@ -131,7 +138,7 @@ class Character:
             getDmg_str = f"{getDmg_str} + {dmgTaken:}" if getDmg_str else f"{dmgTaken}"
 
 
-        """print("Damage dealt:", dmg_str)
+        print("Damage dealt:", dmg_str)
         print("Damage taken by opponent:", getDmg_str)
-        print(f"Opponent hp: {round(opponent.hp)} armor: {opponent.ac}")"""
+        print(f"Opponent hp: {round(opponent.hp)} armor: {opponent.ac}")
 

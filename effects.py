@@ -3,7 +3,7 @@ class Effects:
     def begin_AT(character):
         return (1/(character.sa+1))
     @staticmethod
-    def SA_additive_modified(character):
+    def SA_additive_modified(character): #Na przykład: Krytyczne spowolnienie (-10%) wraz z Szadzią (-14%) wraz z Szybkim atakiem (+40%) doprowadzi do osiągnięcia wartości: SA_additive_modified = (-0.1 - 0.14 + 0.4) = +0.16
         additive_modifiers_sum = 0
         return (character.sa + 1) * (1 + additive_modifiers_sum)
 

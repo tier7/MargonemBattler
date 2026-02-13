@@ -7,6 +7,7 @@ class Tracker(Character):
     able_to_walk = False
     def __init__(self, level):
         super().__init__(level)
+        self.profession = 'tracker'
         self.update_attributes()
 
     def update_attributes(self):

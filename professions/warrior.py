@@ -7,6 +7,7 @@ class Warrior(Character):
 
     def __init__(self, level):
         super().__init__(level)
+        self.profession = 'warrior'
         self.update_attributes()
 
     def update_attributes(self):
